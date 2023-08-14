@@ -9,6 +9,8 @@ class Destination extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     /**
      * Algunas de las variables y constantes que se pueden modificar sino
      * se sigue las convenciones de Laravel y Eloquent.

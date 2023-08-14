@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Destination;
 use App\Models\Flight;
+use App\Models\Destination;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -131,4 +131,73 @@ Route::get('/destinations-test', function () {
     ])->get();
 
     return $destinations;
+});
+
+Route::get('flight-first', function () {
+    $flight = Flight::find(1);
+    $flight = Flight::where('departed', true)->first();
+    $flight = Flight::firstWhere('departed, true');
+
+    $flight = Flight::findOr(101, function () {
+        return 'No existe el vuelo';
+    });
+
+    $flight = Flight::where('legs', '>', 10)->firstOr(function () {
+        return 'No se encontro el vuelo';
+    });
+
+    // Trea el primer elemento y si no existe retorna una excepcion
+    $flight = Flight::where('legs', '>', 10)->firstOrFail();
+    $flight = Flight::findOrFail(101);
+
+    return $flight;
+});
+
+Route::get('destination-first', function () {
+    /**
+     * Al ser solo un campo en la tabla hace el filtro con first y si no
+     * existe crea un nuevo registro con el nombre
+     */
+    $destination = Destination::firstOrCreate([
+        'name' => 'Guerrero'
+    ]);
+
+    /**
+     * Al ser varios campos en la tabla, primero se hace el filtro con first
+     * y si no existe crea un nuevo registro con los 2 arreglos
+     */
+    $flight = Flight::firstOrCreate([
+        'name' => 'Alex Ku'
+    ], [
+        'number' => '123456',
+        'legs' => 4,
+        'active' => true,
+        'departed' => false,
+        'arrived_at' => now(),
+        'destination_id' => 1
+    ]);
+
+    /**
+     * Crea una nueva instancia, sin guardarlo en la DB, es util cuando se
+     * desea hacer otras acciones antes de guardar.
+     */
+    $flight = Flight::firstOrNew([
+        'name' => 'Alex Ku Dzul'
+    ], [
+        'number' => '123456',
+        'legs' => 4,
+        'active' => true,
+        'departed' => false,
+        'arrived_at' => now(),
+        'destination_id' => 1
+    ]);
+
+    // $flight->save();
+
+    $flight = Flight::where('departed', true)->count(); // return count
+    $flight = Flight::where('departed', true)->sum('legs'); // return sum
+    $flight = Flight::where('departed', true)->max('legs'); // return max number (10 es el numero maximo)
+    $flight = Flight::where('departed', true)->avg('legs'); // return avg number (promedio)
+
+    return [$destination, $flight];
 });
