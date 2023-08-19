@@ -13,6 +13,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         // $schedule->command('inspire')->hourly();
+        // Se ejecuta cada día y para que funcione en el servidor se necesita un cron job
+        $schedule->command('model:prune')->daily();
     }
 
     /**
