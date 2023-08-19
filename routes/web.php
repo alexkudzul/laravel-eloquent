@@ -201,3 +201,52 @@ Route::get('destination-first', function () {
 
     return [$destination, $flight];
 });
+
+Route::get('flight-destination-update-create', function () {
+    /**
+     * Insertar un nuevo registro
+     */
+    // $destination = new Destination();
+    // $destination->name = 'Baja California';
+    // $destination->save();
+
+    $data = [
+        'name' => 'Flight 2',
+        'number' => '1234',
+        'legs' => 1,
+        'active' => true,
+        'departed' => false,
+        'arrived_at' => null,
+        'destination_id' => 1,
+    ];
+
+    /**
+     * Create
+     */
+    // $flight = Flight::create($data);
+
+    /**
+     * Update
+     */
+    // $flight = Flight::find(102);
+    // $flight->update($data);
+
+    /**
+     * updateOrCreate, el primer array hace un filtro o busca que exista un
+     * registro para actualizar, sino existe crea un nuevo registro con esos
+     * datos.
+     */
+    $flight = Flight::updateOrCreate([
+        'name' => 'Flight 2',
+    ], [
+        'name' => 'Flight 2',
+        'number' => '12345',
+        'legs' => 1,
+        'active' => true,
+        'departed' => false,
+        'arrived_at' => null,
+        'destination_id' => 1,
+    ]);
+
+    return $flight;
+});
