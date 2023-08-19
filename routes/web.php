@@ -250,3 +250,63 @@ Route::get('flight-destination-update-create', function () {
 
     return $flight;
 });
+
+Route::get('delete-softdeletes', function () {
+    /**
+     * Eliminar registros
+     */
+    // $flight = Flight::find(102);
+    // $flight->delete();
+
+    /**
+     * Eliminar registros con destroy
+     */
+    // Flight::destroy(102);
+    // Flight::destroy([99, 100, 101]);
+
+    /**
+     * Eliminar todo los registros en una tabla, de igual manera los ids de
+     * incremento, se restablece a 1.
+     */
+    // Flight::truncate();
+
+    /**
+     * Eliminar un registro por medio de un filtro
+     */
+    // Flight::where('active', 0)->delete();
+
+
+    /**
+     * SoftDeletes
+     * Crear una papelera de reciclaje
+     */
+
+    Flight::destroy(90, 91, 92, 100);
+
+    // Al estar eliminado con SoftDeletes no buscara ni mostrara ese dato al recuperarlo
+    // $flight = Flight::findOrFail(100);
+
+    // Mostrar todo los registros más los eliminados con SoftDeletes
+    $flight = Flight::orderBy('id', 'desc')->withTrashed()->get();
+
+    // Mostrar solo los registros eliminados con SoftDeletes
+    $flight = Flight::orderBy('id', 'desc')->onlyTrashed()->get();
+
+    // Busca un id que ha sido eliminado
+    $flight = Flight::where('id', 100)->onlyTrashed()->get();
+
+    // Busca un id que ha sido eliminado y restaurar el registro
+    $flight = Flight::where('id', 100)->onlyTrashed()->restore();
+
+    // Busca un id que ha sido eliminado y elimina el registro de forma permanente
+    $flight = Flight::where('id', 90)->onlyTrashed()->forceDelete();
+
+    // Verificar si un registro se encuentra en la papelera de reciclaje
+    $flight = Flight::where('id', 91)->withTrashed()->first();
+
+    if ($flight->trashed()) {
+        return 'El registro SI se encuentra en la papelera de reciclaje';
+    }
+
+    return 'El registro NO se encuentra en la papelera de reciclaje';
+});
