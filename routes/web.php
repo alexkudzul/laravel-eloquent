@@ -335,3 +335,19 @@ Route::get('query-scopes', function () {
 
     return $flight;
 });
+
+Route::get('events-observers', function () {
+
+    // Se ejecuta el evento creating del observer FlightObserver y se agrega el campo 'number'
+    // Flight::create([
+    //     'name' => 'Alex Ku',
+    //     'legs' => 2,
+    //     'active' => 0,
+    //     'departed' => 1,
+    //     'destination_id' => 7,
+    // ]);
+
+    // Se ejecuta el evento retrieved del observer FlightObserver
+    // El evento retrieved se enviará cuando se recupere un modelo existente de la base de datos.
+    return Flight::find(1);
+});
