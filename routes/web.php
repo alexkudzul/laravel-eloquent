@@ -310,3 +310,28 @@ Route::get('delete-softdeletes', function () {
 
     return 'El registro NO se encuentra en la papelera de reciclaje';
 });
+
+Route::get('query-scopes', function () {
+    // https://laravel.com/docs/10.x/eloquent#query-scopes
+
+    // ------- Global Scopes - Uso -------
+
+    // return Flight::where('departed', false)->get(); // select * from flights where departed = false
+    // return Flight::all(); // Ya tiene un scope global con la funcion del where('departed', false)
+
+    // Si desea eliminar un ámbito global para una consulta determinada, puede
+    // utilizar el withoutGlobalScopemétodo. Este método acepta el nombre de
+    // clase del alcance global como su único argumento:
+    // Flight::withoutGlobalScopes([NotDepartedScope::class])->get();
+
+    // O bien, si definió el ámbito global mediante un cierre, debe pasar el
+    // nombre de la cadena que asignó al ámbito global:
+    // Flight::withoutGlobalScopes(['not_departed'])->get();
+
+    // ------- Local Scopes - Uso -------
+
+    $flight = Flight::active()->get(); // Se utiliza sin el prefijo de 'scope'
+    $flight = Flight::legs(2)->get(); // Se utiliza sin el prefijo de 'scope'
+
+    return $flight;
+});
