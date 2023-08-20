@@ -17,7 +17,8 @@ class PhoneFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'number' => $this->faker->phoneNumber(),
+            'user_id' => $this->faker->numberBetween(1, 10),
         ];
     }
 }

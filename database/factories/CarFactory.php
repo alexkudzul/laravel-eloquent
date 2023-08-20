@@ -17,7 +17,8 @@ class CarFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'model' => $this->faker->name(),
+            'mechanic_id' => $this->faker->numberBetween(1, 5),
         ];
     }
 }
