@@ -35,5 +35,9 @@ class DatabaseSeeder extends Seeder
                 \App\Models\Owner::factory(1)->create(['car_id' => $car->id]);
             });
         });
+
+        $this->call([
+            RoleSeeder::class,
+        ]);
     }
 }
