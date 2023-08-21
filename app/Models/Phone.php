@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Phone extends Model
 {
     use HasFactory;
+
+    // Relación uno a uno o muchos inversa
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

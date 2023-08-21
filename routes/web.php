@@ -1,7 +1,11 @@
 <?php
 
+use App\Models\Course;
+use App\Models\User;
 use App\Models\Flight;
 use App\Models\Destination;
+use App\Models\Mechanic;
+use App\Models\Phone;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -350,4 +354,31 @@ Route::get('events-observers', function () {
     // Se ejecuta el evento retrieved del observer FlightObserver
     // El evento retrieved se enviará cuando se recupere un modelo existente de la base de datos.
     return Flight::find(1);
+});
+
+Route::get('relations', function () {
+    $user = User::find(1);
+    $user->phone;
+    $user->courses;
+    $user->latestCourses; // Retorna el curso mas nuevo
+    $user->oldestCourses; // Retorna el curso mas antiguo
+
+    $phone = Phone::find(1);
+    $phone->user;
+
+    $course = Course::find(1);
+    $course->user;
+    $course->sections;
+    $course->lessons; // Relación uno a muchos a través // NOTA: con esta relación se puede obtener información de lecciones del Section de un Course
+
+    $mechanic = Mechanic::find(1);
+    $mechanic->car;
+    $mechanic->owner; // Relación uno a uno a través // NOTA: con esta relación se puede obtener información del dueño del Car con el que hizo trato el Mechanic
+
+    return [
+        'user' => $user,
+        'phone' => $phone,
+        'course' => $course,
+        'mechanic' => $mechanic
+    ];
 });

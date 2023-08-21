@@ -42,4 +42,30 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    // Relación uno a uno
+    public function phone()
+    {
+        return $this->hasOne(Phone::class)->withDefault([
+            'phone' => 'No tiene teléfono',
+        ]);
+    }
+
+    // Relación uno a muchos
+    public function courses()
+    {
+        return $this->hasMany(Course::class);
+    }
+
+    // Relación uno a uno
+    public function latestCourses()
+    {
+        return $this->hasOne(Course::class)->latestOfMany();
+    }
+
+    // Relación uno a uno
+    public function oldestCourses()
+    {
+        return $this->hasOne(Course::class)->oldestOfMany();
+    }
 }

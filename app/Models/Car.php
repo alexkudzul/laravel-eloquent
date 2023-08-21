@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Car extends Model
 {
     use HasFactory;
+
+    // Relación uno a uno
+    public function owner()
+    {
+        return $this->hasOne(Owner::class);
+    }
 }
