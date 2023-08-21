@@ -18,7 +18,6 @@ class OwnerFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'car_id' => $this->faker->numberBetween(1, 10),
         ];
     }
 }

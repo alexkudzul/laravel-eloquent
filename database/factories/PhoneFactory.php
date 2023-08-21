@@ -18,7 +18,6 @@ class PhoneFactory extends Factory
     {
         return [
             'number' => $this->faker->phoneNumber(),
-            'user_id' => $this->faker->unique()->numberBetween(1, 10),
         ];
     }
 }

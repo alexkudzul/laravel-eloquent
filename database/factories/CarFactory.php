@@ -18,7 +18,6 @@ class CarFactory extends Factory
     {
         return [
             'model' => $this->faker->name(),
-            'mechanic_id' => $this->faker->numberBetween(1, 5),
         ];
     }
 }
