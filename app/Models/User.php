@@ -68,4 +68,13 @@ class User extends Authenticatable
     {
         return $this->hasOne(Course::class)->oldestOfMany();
     }
+
+    // Relación muchos a muchos
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class)
+            ->as('subscriptions') // as() Cambia el nombre del atributo 'pivot'
+            ->withPivot('active')
+            ->withTimestamps();
+    }
 }

@@ -356,7 +356,7 @@ Route::get('events-observers', function () {
     return Flight::find(1);
 });
 
-Route::get('relations', function () {
+Route::get('relationship', function () {
     $user = User::find(1);
     $user->phone;
     $user->courses;
@@ -380,5 +380,17 @@ Route::get('relations', function () {
         'phone' => $phone,
         'course' => $course,
         'mechanic' => $mechanic
+    ];
+});
+
+Route::get('relationship-many-to-many', function () {
+    $user = User::find(1);
+    $user->roles;
+
+    $roles_active = $user->roles()->wherePivot('active', true)->get();
+
+    return [
+        'user' => $user,
+        'roles_active' => $roles_active
     ];
 });
