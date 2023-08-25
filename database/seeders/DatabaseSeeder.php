@@ -26,7 +26,17 @@ class DatabaseSeeder extends Seeder
         \App\Models\Destination::factory(10)->create();
         \App\Models\Flight::factory(100)->create();
 
-        \App\Models\Course::factory(10)->create();
+        \App\Models\Course::factory(10)->create()->each(function ($course) {
+            \App\Models\Image::factory(1)->create([
+                'imageable_id' => $course->id,
+                'imageable_type' => 'App\\Models\\Course',
+            ]);
+
+            \App\Models\Comment::factory(5)->create([
+                'commentable_id' => $course->id,
+                'commentable_type' => 'App\\Models\\Course',
+            ]);
+        });
         \App\Models\Section::factory(50)->create();
         \App\Models\Lesson::factory(100)->create();
 
@@ -39,5 +49,19 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RoleSeeder::class,
         ]);
+
+        \App\Models\Post::factory(10)->create()->each(function ($post) {
+            \App\Models\Image::factory(1)->create([
+                'imageable_id' => $post->id,
+                'imageable_type' => 'App\\Models\\Post',
+            ]);
+
+            \App\Models\Comment::factory(5)->create([
+                'commentable_id' => $post->id,
+                'commentable_type' => 'App\\Models\\Post',
+            ]);
+        });
+
+        \App\Models\Tag::factory(10)->create();
     }
 }
