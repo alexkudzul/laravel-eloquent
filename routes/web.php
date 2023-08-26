@@ -5,6 +5,7 @@ use App\Models\User;
 use App\Models\Phone;
 use App\Models\Course;
 use App\Models\Flight;
+use App\Models\Comment;
 use App\Models\Mechanic;
 use App\Models\Destination;
 use Illuminate\Support\Facades\Route;
@@ -419,5 +420,71 @@ Route::get('relationships-polymorphic', function () {
     return [
         'course' => $course,
         'post' => $post,
+    ];
+});
+
+Route::get('queries-in-relationships', function () {
+    // ------- Consultas con relaciones -------
+    $user = User::find(1);
+
+    // Nota: hay que tener cuidado cuando se usa orWhere ya que traera
+    // cualquier posts que tenga likes mayor a 500 ya que se agrupa al
+    // mismo nivel que las otras restricciones puestas anteriormente
+
+    // $user_posts = $user->posts()->where('active', true)->orWhere('likes', '>=', 500)->get();
+    // select * from posts where user_id = 1 and active = true or likes >= 500
+
+    // Solución para usar mejor un orWhere
+    $user_posts = $user->posts()->where(function ($query) {
+        $query->where('active', true)
+            ->orWhere('likes', '>=', 500);
+    })->get();
+
+    // ------- Comprobar la existencia de una relación -------
+
+    // Obtiene los usuarios que tiene posts asociados
+    // $users_posts = User::has('posts')->get();
+
+    // Obtiene los usuarios que tiene posts asociados y que tenga más de 4 posts
+    $users_posts = User::has('posts', '>', 2)->get();
+
+    // ------- Anidar relaciones en las consultas -------
+
+    // Obtiene los cursos que solo tiene lecciones
+    $courses = Course::has('sections.lessons')->get();
+    // Existe una relalacion a través de... que tiene el mismo funcionalidad de las relaciones anidadas
+    // $courses = Course::has('lessons')->get(); // Esta consulta hace lo mismo con el has('sections.lessons')
+
+    // ------- Especificar filtros adicionales con whereHas -------
+
+    // whereHas() funciona básicamente igual has() pero le permite especificar
+    // filtros adicionales para que el modelo relacionado los verifique.
+
+    // Obtiene los usuarios que han escrito un post y que en su title contenga la palabra 'dolorum'
+    $user_posts_search = User::whereHas('posts', function ($query) {
+        $query->where('title', 'like', '%dolorum%');
+    })->get();
+
+    // ------- Comprobar la ausencia de una relación -------
+
+    // Obtiene los usuarios que no han escrito un post
+    $user_has_no_post = User::doesntHave('posts')->get();
+
+    // ------- Consulta con relaciones polimórfica -------
+
+    // Obtiene los comentarios de los cursos
+    $comments_courses = Comment::whereHasMorph('commentable', Course::class, function ($query) {
+        // Se puede agregar más consultas
+        return;
+    })->get();
+
+    return [
+        'user' => $user,
+        'user_posts' => $user_posts,
+        'users_posts' => $users_posts,
+        'courses' => $courses,
+        'user_posts_search' => $user_posts_search,
+        'user_has_no_post' => $user_has_no_post,
+        'comments_courses' => $comments_courses,
     ];
 });
