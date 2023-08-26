@@ -1,11 +1,12 @@
 <?php
 
-use App\Models\Course;
+use App\Models\Post;
 use App\Models\User;
-use App\Models\Flight;
-use App\Models\Destination;
-use App\Models\Mechanic;
 use App\Models\Phone;
+use App\Models\Course;
+use App\Models\Flight;
+use App\Models\Mechanic;
+use App\Models\Destination;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -392,5 +393,31 @@ Route::get('relationship-many-to-many', function () {
     return [
         'user' => $user,
         'roles_active' => $roles_active
+    ];
+});
+
+Route::get('relationships-polymorphic', function () {
+    $course = Course::find(1);
+    $post = Post::find(1);
+
+    // Relación polimórfica de uno a uno
+    $course->image;
+    $post->image;
+
+    // Relación polimórfica de uno a muchos
+    $course->comments;
+    $post->comments;
+
+    // Relación polimórfica de uno a uno con función extra: latestOfMany() y oldestOfMany()
+    $course->latestComment;
+    $post->oldestComment;
+
+    // Relación polimórfica de muchos a muchos
+    $course->tags;
+    $post->tags;
+
+    return [
+        'course' => $course,
+        'post' => $post,
     ];
 });
