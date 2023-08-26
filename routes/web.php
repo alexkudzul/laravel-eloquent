@@ -9,6 +9,8 @@ use App\Models\Comment;
 use App\Models\Mechanic;
 use App\Models\Destination;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -488,3 +490,12 @@ Route::get('queries-in-relationships', function () {
         'comments_courses' => $comments_courses,
     ];
 });
+
+/**
+ * Más ejemplos de problemas de consulta N+1 y solucionarlo con carga ansiosa
+ *
+ * https://codersfree.com/posts/rendimiento-eloquent-4-ejemplos-de-problemas-de-consulta-n1
+ */
+Route::get('eager-loading', [PostController::class, 'index']);
+Route::get('eager-loading-2', [UserController::class, 'index']);
+Route::get('eager-loading-3', [UserController::class, 'active']);

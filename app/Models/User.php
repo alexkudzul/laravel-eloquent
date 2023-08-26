@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class User extends Authenticatable
 {
@@ -82,5 +83,14 @@ class User extends Authenticatable
     public function posts()
     {
         return $this->hasMany(Post::class);
+    }
+
+    // Accesores
+    public function isActive(): Attribute
+    {
+        // Verifica la relación entre usuarios y posts, si la cantidad de posts asociados a un usuario es mayor a 0, retorna true o false
+        return Attribute::make(
+            get: fn () => $this->posts->count() > 0, // return true o false
+        );
     }
 }
