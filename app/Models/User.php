@@ -77,4 +77,10 @@ class User extends Authenticatable
             ->withPivot('active')
             ->withTimestamps();
     }
+
+    // Relación uno a muchos
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
 }

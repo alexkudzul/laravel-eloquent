@@ -19,6 +19,9 @@ class PostFactory extends Factory
         return [
             'title' => $this->faker->name(),
             'body' => $this->faker->text(),
+            'active' => $this->faker->numberBetween(0, 1),
+            'likes' => $this->faker->randomNumber(3, true),
+            'user_id' => $this->faker->numberBetween(1, 10),
         ];
     }
 }

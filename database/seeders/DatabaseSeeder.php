@@ -50,7 +50,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
         ]);
 
-        \App\Models\Post::factory(10)->create()->each(function ($post) {
+        \App\Models\Post::factory(20)->create()->each(function ($post) {
             \App\Models\Image::factory(1)->create([
                 'imageable_id' => $post->id,
                 'imageable_type' => 'App\\Models\\Post',
