@@ -499,3 +499,72 @@ Route::get('queries-in-relationships', function () {
 Route::get('eager-loading', [PostController::class, 'index']);
 Route::get('eager-loading-2', [UserController::class, 'index']);
 Route::get('eager-loading-3', [UserController::class, 'active']);
+
+/**
+ * Usar relaciones normales (hasOne, hasMany, morphOne, etc) para insertar registros a la db
+ * https://laravel.com/docs/10.x/eloquent-relationships#the-save-method
+ * https://laravel.com/docs/10.x/eloquent-relationships#the-create-method
+ */
+Route::get('inserting-and-updating-using-relationships', function () {
+    // Crear un nuevo comentario y asignarlo a un curso
+
+    // Opción 1 - con save()
+
+    // $comment = new Comment();
+    // $comment->body = 'Comentario de prueba';
+
+    // $course = Course::find(1);
+    // $course->comments()->save($comment);
+
+    // Opción 2 - con create()
+
+    $course = Course::find(1);
+    $course->comments()->create([
+        'body' => 'Comentario de prueba desde asignación masiva (create())',
+    ]);
+
+    return 'Se creo con exito';
+});
+
+/**
+ * Usar relaciones muchos a muchos (tablas intemedias o pivots) para insertar registros a la db
+ * https://laravel.com/docs/10.x/eloquent-relationships#attaching-detaching
+ * https://laravel.com/docs/10.x/eloquent-relationships#syncing-associations
+ */
+Route::get('inserting-and-updating-using-relationships-2', function () {
+
+    // Crear un nuevo registro en la tabla pivot role_user
+    $user = User::find(1);
+
+    // Inserta un registro con el role 1 y con el usuario 1
+    // $user->roles()->attach(1);
+    // Inserta un registro con varios roles (2 y 3) con el usuario 1
+    // $user->roles()->attach([2, 3]);
+
+
+    // Eliminar un nuevo registro en la tabla pivot role_user
+    // $user->roles()->detach([2, 3]);
+
+    // Caso 1: Se inserta un registro con el role 1, 2 y 3 con el usuario 1,
+    // pero el role 1 ya se encuentra insertado anteriormente y para evitar
+    // duplicar registros se usa el método async y asi solo se inserta el 2 y 3
+
+    // async - Verifica si ya se agrego con anterioridad algun registro, de ser asi lo ignora y solo agrega los faltantes
+    // async - Es util cuando se usa con checkbox para agregar o actualizar los inputs
+    $user->roles()->sync([1, 2, 3]);
+
+    // sync y attach: también puede pasar valores de la tabla intermedia adicionales con los IDs
+    $user->roles()->sync([
+        1 => [
+            'active' => true,
+        ],
+        2 => [
+            'active' => false,
+        ],
+        3 => [
+            'active' => true,
+        ],
+    ]);
+
+    return 'Se creo con exito';
+});
