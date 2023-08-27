@@ -86,11 +86,51 @@ class User extends Authenticatable
     }
 
     // Accesores
-    public function isActive(): Attribute
+    protected function isActive(): Attribute
     {
         // Verifica la relación entre usuarios y posts, si la cantidad de posts asociados a un usuario es mayor a 0, retorna true o false
         return Attribute::make(
             get: fn () => $this->posts->count() > 0, // return true o false
         );
     }
+
+    /**
+     * Mutadores y Casting
+     *
+     * https://laravel.com/docs/10.x/eloquent-mutators
+     *
+     * Los mutadores te permiten modificar los valores de los atributos de un
+     * modelo antes de que se almacenen en la base de datos. Por ejemplo, si
+     * quieres almacenar un valor en formato de fecha, puedes utilizar un
+     * mutador para convertir la fecha en un formato adecuado antes de que
+     * se almacene.
+     *
+     * Los accesores, por otro lado, te permiten recuperar valores de los
+     * atributos de un modelo de una forma personalizada. Por ejemplo, si
+     * quieres mostrar una fecha en un formato específico en tu aplicación,
+     * puedes utilizar un accesor para convertir la fecha en el formato
+     * adecuado antes de que se muestre.
+     */
+
+    protected function name(): Attribute
+    {
+        return Attribute::make(
+            // Accesores
+            get: fn (string $value) => ucwords($value),
+
+            // Mutadores
+            set: fn (string $value) => strtolower($value),
+        );
+    }
+
+    // Forma de escribir un accesor y mutador anteriormente
+    // public function getNameAttribute($value)
+    // {
+    //     return ucwords($value);
+    // }
+
+    // public function setNameAttribute($value)
+    // {
+    //     $this->attributes['name'] = strtolower($value);
+    // }
 }

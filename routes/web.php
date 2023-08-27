@@ -11,6 +11,7 @@ use App\Models\Destination;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Hash;
 
 /*
 |--------------------------------------------------------------------------
@@ -632,4 +633,44 @@ Route::get('collections', function () {
         'only' => $only,
         'unique' => $unique,
     ];
+});
+
+/**
+ * Mutadores y Casting
+ *
+ * https://laravel.com/docs/10.x/eloquent-mutators
+ */
+Route::get('mutators-casting', function () {
+    /**
+     * Mutadores y Casting
+     *
+     * Los mutadores te permiten modificar los valores de los atributos de un
+     * modelo antes de que se almacenen en la base de datos. Por ejemplo, si
+     * quieres almacenar un valor en formato de fecha, puedes utilizar un
+     * mutador para convertir la fecha en un formato adecuado antes de que
+     * se almacene.
+     *
+     * Los accesores, por otro lado, te permiten recuperar valores de los
+     * atributos de un modelo de una forma personalizada. Por ejemplo, si
+     * quieres mostrar una fecha en un formato específico en tu aplicación,
+     * puedes utilizar un accesor para convertir la fecha en el formato
+     * adecuado antes de que se muestre.
+     */
+
+    // Nota: revisar el modelo User para ver el mutador y el accesor creado
+
+    // Ejemplo de un formulario, caso que un usuario se registre con un nombre de este tipo: 'ALeX TeST'
+    $data = [
+        'name' => 'ALeX TeST',
+        'email' => 'test@test.com',
+        'password' => Hash::make(12345678),
+    ];
+
+    // Se creo un mutador para guardar el name en la db en 'alex test'
+    $set_user = User::create($data);
+
+    // Se creo un accesor para convertir el nombre en 'Alex Test'
+    $get_user = $set_user->name;
+
+    return $get_user;
 });
