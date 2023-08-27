@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Casts\Meta;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Post extends Model
 {
@@ -24,9 +25,18 @@ class Post extends Model
      * convertir la columna.
      *
      * https://laravel.com/docs/10.x/eloquent-mutators#attribute-casting
+     *
+     * Custom Casts
+     *
+     * Laravel tiene una variedad de tipos de conversión útiles e integrados;
+     * sin embargo, es posible que en ocasiones necesites definir tus propios
+     * tipos de conversión.
+     *
+     * https://laravel.com/docs/10.x/eloquent-mutators#custom-casts
      */
     protected $casts = [
-        'meta' => 'array',
+        // 'meta' => 'array', // Sin casts personalizado
+        'meta' => Meta::class, // Con casts personalizado
     ];
 
     // Relación polimórfica de uno a uno

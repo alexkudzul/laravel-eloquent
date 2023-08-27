@@ -688,6 +688,14 @@ Route::get('mutators-casting', function () {
  * convertir la columna.
  *
  * https://laravel.com/docs/10.x/eloquent-mutators#attribute-casting
+ *
+ * Custom Casts
+ *
+ * Laravel tiene una variedad de tipos de conversión útiles e integrados;
+ * sin embargo, es posible que en ocasiones necesites definir tus propios
+ * tipos de conversión.
+ *
+ * https://laravel.com/docs/10.x/eloquent-mutators#custom-casts
  */
 Route::get('attribute-casting', function () {
     // Como sustituir la conversión de datos con mutators y casting, solo con $casts.
