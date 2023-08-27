@@ -568,3 +568,68 @@ Route::get('inserting-and-updating-using-relationships-2', function () {
 
     return 'Se creo con exito';
 });
+
+/**
+ * Collections
+ *
+ * https://laravel.com/docs/10.x/eloquent-collections
+ */
+Route::get('collections', function () {
+    $users = User::all();
+    $users2 = User::whereIn('id', [1, 2, 3])->get();
+    $users3 = User::whereIn('id', [2, 3, 4])->get();
+
+    // contains - método determina si la colección contiene un elemento determinado
+    if ($users->contains(1)) {
+        $contains = 'El usuario SI existe en la colección';
+    } else {
+        $contains = 'El usuario NO existe en la colección';
+    }
+
+    // diff - método devuelve todos los modelos que no están presentes en la colección dada
+    $diff = $users->diff($users2);
+
+    // except - método devuelve todos los modelos que no tienen las claves principales proporcionadas
+    $except = $users->except([1, 2, 3]);
+
+    // find - la diferencia entre User::find(8), es que con el $users->find() lo obtiene en la colección sin consultar a la DB
+    // Ejemplo: Puede que si exista user con id 8 en la DB pero en la colección no
+    $find = $users->find(8);
+
+    // intersect - método devuelve todos los modelos que también están presentes en la colección dada
+    // Obtiene los modelos que se encuentra presente en ambas colecciones
+    $intersect = $users2->intersect($users3);
+
+    // load - Carga una relación aun cuando ya se haya creado la colección
+    $load = $users->load('posts');
+
+    // modelKeys - método devuelve las claves principales (ids) de todos los modelos de la colección
+    $model_keys = $users->modelKeys();
+
+    // makeVisible - método hace visibles los atributos que normalmente están "ocultos" en cada modelo de la colección
+    $make_visible = $users->makeVisible(['password', 'remember_token']);
+
+    // makeHidden - método oculta atributos que normalmente son "visibles" en cada modelo de la colección
+    $make_hidden = $users->makeVisible(['password', 'remember_token'])->makeHidden('email');
+
+    // only - método devuelve todos los modelos que tienen las claves (ids) principales proporcionadas
+    $only = $users->only([1, 2, 3]);
+
+    // unique - método devuelve todos los modelos únicos de la colección.
+    // Se eliminan todos los modelos del mismo tipo con la misma clave principal que otro modelo de la colección
+    $unique = $users->unique();
+
+    return [
+        'contains' => $contains,
+        'diff' => $diff,
+        'except' => $except,
+        'find' => $find,
+        'intersect' => $intersect,
+        'load' => $load,
+        'model_keys' => $model_keys,
+        'make_visible' => $make_visible,
+        'make_hidden' => $make_hidden,
+        'only' => $only,
+        'unique' => $unique,
+    ];
+});
