@@ -674,3 +674,61 @@ Route::get('mutators-casting', function () {
 
     return $get_user;
 });
+
+/**
+ * Attribute Casting
+ *
+ * La conversión de atributos proporciona una funcionalidad similar a los
+ * accesores y mutadores sin necesidad de definir ningún método adicional
+ * en su modelo. En cambio, la propiedad de su modelo $casts proporciona
+ * un método conveniente para convertir atributos a tipos de datos comunes.
+ *
+ * La $casts propiedad debe ser una matriz donde la clave es el nombre del
+ * atributo que se está convirtiendo y el valor es el tipo al que desea
+ * convertir la columna.
+ *
+ * https://laravel.com/docs/10.x/eloquent-mutators#attribute-casting
+ */
+Route::get('attribute-casting', function () {
+    // Como sustituir la conversión de datos con mutators y casting, solo con $casts.
+    // Ejemplo explicado con json_encode y json_decode.
+
+    $meta = [
+        'description' => 'Meta description test',
+        'keywords' => 'php, laravel',
+    ];
+
+    // $new_post = Post::create([
+    //     'title' => 'Title Test',
+    //     'body' => 'Lorem ipsum dolor sit amet.',
+    //     'meta' => json_encode($meta),
+    //     'likes' => 100,
+    //     'user_id' => 1
+    // ]);
+
+    // $post = Post::find(21);
+    // $meta = json_decode($post->meta);
+    // $meta->description;
+
+    // Para evitar usar json_encode y json_decode se puede usar los
+    // mutadores y accesores, pero se puede mejorar aun más usando casting
+    // Se recomienda usar cuando los tipos de datos sean comunes: arrays,
+    // boolean, date, float, etc.
+
+    // $meta ya no esta usando un json_encode(), todo lo hace la variable $casts del modelo Post
+    $new_post = Post::create([
+        'title' => 'Title Test 2',
+        'body' => 'Lorem ipsum dolor sit amet. 2',
+        'meta' => $meta,
+        'likes' => 100,
+        'user_id' => 1
+    ]);
+
+    $post = Post::find(21);
+    $meta = $post->meta['description'];
+
+    return [
+        'new_post' => $new_post,
+        'meta' => $meta,
+    ];
+});

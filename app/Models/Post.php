@@ -9,6 +9,26 @@ class Post extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
+
+    /**
+     * Attribute Casting
+     *
+     * La conversión de atributos proporciona una funcionalidad similar a los
+     * accesores y mutadores sin necesidad de definir ningún método adicional
+     * en su modelo. En cambio, la propiedad de su modelo $casts proporciona
+     * un método conveniente para convertir atributos a tipos de datos comunes.
+     *
+     * La $casts propiedad debe ser una matriz donde la clave es el nombre del
+     * atributo que se está convirtiendo y el valor es el tipo al que desea
+     * convertir la columna.
+     *
+     * https://laravel.com/docs/10.x/eloquent-mutators#attribute-casting
+     */
+    protected $casts = [
+        'meta' => 'array',
+    ];
+
     // Relación polimórfica de uno a uno
     public function image()
     {

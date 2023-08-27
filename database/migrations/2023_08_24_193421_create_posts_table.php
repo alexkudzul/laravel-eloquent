@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('body');
+            $table->json('meta')->nullable();
             $table->boolean('active')->default(1);
             $table->string('likes');
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
