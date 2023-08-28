@@ -31,6 +31,16 @@ class PostController extends Controller
      * recurso determinado.
      *
      * https://laravel.com/docs/10.x/eloquent-resources
+     *
+     * Writing Resources
+     *
+     * Además de permitirte transformar tus modelos y colecciones en formatos
+     * de salida personalizados, los recursos también te permiten recibir y
+     * validar datos de entrada. En este módulo, aprenderás cómo utilizar
+     * recursos de escritura en Laravel para simplificar la validación y el
+     * procesamiento de datos de entrada.
+     *
+     * https://laravel.com/docs/10.x/eloquent-resources#writing-resources
      */
 
     /**
@@ -38,7 +48,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
+        $posts = Post::with('user')->paginate();
 
         // Forma de mostrar un Resource - transforma modelos individuales
         // return PostResource::collection($posts);

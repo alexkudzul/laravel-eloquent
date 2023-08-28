@@ -5,10 +5,8 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PostResource extends JsonResource
+class UserResource extends JsonResource
 {
-    // public static $wrap = 'post'; // cambia el nombre de data a post
-
     /**
      * Transform the resource into an array.
      *
@@ -52,17 +50,8 @@ class PostResource extends JsonResource
          */
         return [
             'id' => $this->id,
-            'title' => $this->title,
-            'body' => $this->body,
-            'active' => $this->active,
-            'likes' => $this->likes,
-            'user_id' => $this->user_id,
-            // Validar con una condición, si es true se muestra en la data y caso contrario no se muestra
-            'test' => $this->when(false, 'test'),
-            // 'user' => $this->user, // Carga la relacion user
-            // 'user' => new UserResource($this->user), // Carga la relacion user personalizado con un Resource
-            // Carga la relacion user personalizado con un Resource, con la condicion si se carga la relacion en el controller con with('user')
-            'user' => new UserResource($this->whenLoaded('user')),
+            'name' => $this->name,
+            'email' => $this->email,
         ];
     }
 }

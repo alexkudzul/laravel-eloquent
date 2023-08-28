@@ -40,5 +40,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
  * recurso determinado.
  *
  * https://laravel.com/docs/10.x/eloquent-resources
+ *
+ * Writing Resources
+ *
+ * Además de permitirte transformar tus modelos y colecciones en formatos
+ * de salida personalizados, los recursos también te permiten recibir y
+ * validar datos de entrada. En este módulo, aprenderás cómo utilizar
+ * recursos de escritura en Laravel para simplificar la validación y el
+ * procesamiento de datos de entrada.
+ *
+ * https://laravel.com/docs/10.x/eloquent-resources#writing-resources
  */
 Route::apiResource('posts', PostController::class);
