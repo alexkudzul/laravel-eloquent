@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Casts\Meta;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -11,6 +12,39 @@ class Post extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    // protected $appends = [
+    //     // 'is_admin' // Se agrego desde el controlador
+    // ];
+
+    /**
+     * The attributes that should be visible in arrays.
+     *
+     * @var array
+     */
+    // protected $visible = [
+    //     'title',
+    //     'body',
+    //     'meta',
+    //     'active',
+    //     'user_id',
+    //     'is_admin',
+    // ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    // protected $hidden = [
+    //     'created_at',
+    //     'updated_at',
+    // ];
 
     /**
      * Attribute Casting
@@ -37,6 +71,10 @@ class Post extends Model
     protected $casts = [
         // 'meta' => 'array', // Sin casts personalizado
         'meta' => Meta::class, // Con casts personalizado
+
+        // Permite cambiar el formato de fechas
+        // 'created_at' => 'date:Y-m-d',
+        // 'updated_at' => 'date:Y-m-d',
     ];
 
     // Relación polimórfica de uno a uno
@@ -73,5 +111,13 @@ class Post extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    // Mutador
+    public function isAdmin(): Attribute
+    {
+        return new Attribute(
+            get: fn () => 'yes',
+        );
     }
 }

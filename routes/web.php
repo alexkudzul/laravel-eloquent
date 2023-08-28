@@ -740,3 +740,25 @@ Route::get('attribute-casting', function () {
         'meta' => $meta,
     ];
 });
+
+/**
+ * Eloquent: Serialization
+ *
+ * Al crear API con Laravel, a menudo necesitarás convertir tus modelos y
+ * relaciones a matrices o JSON. Eloquent incluye métodos convenientes para
+ * realizar estas conversiones, además de controlar qué atributos se incluyen
+ * en la representación serializada de sus modelos.
+ *
+ * https://laravel.com/docs/10.x/eloquent-serialization
+ */
+Route::get('serialization', function () {
+    $posts = Post::all()->append('is_admin');
+
+    $to_array = $posts->toArray();
+    $to_json = $posts->toJson();
+
+    return [
+        'to_array' => $to_array,
+        'to_json' => $to_json,
+    ];
+});
